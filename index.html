@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>卡片式入口網站</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      background: #f4f4f9;
+      color: #333;
+    }
+    header {
+      background: #4a90e2;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .search-box {
+      text-align: center;
+      margin: 1rem;
+    }
+    .search-box input {
+      padding: 0.5rem;
+      width: 60%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 1rem;
+    }
+    .card-content h3 {
+      margin: 0 0 0.5rem;
+    }
+    .card-content p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .card-content a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      text-decoration: none;
+      color: #4a90e2;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eee;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>我的入口網站</h1>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜尋卡片...">
+  </div>
+
+  <main class="card-container" id="cardContainer">
+    <!-- 卡片由 JS 動態插入 -->
+  </main>
+
+  <footer>
+    <p>© 2026 我的入口網站</p>
+  </footer>
+
+  <script>
+    // 卡片資料，可彈性新增
+    const cards = [
+      {
+        title: "我的 GitHub",
+        description: "查看我的 GitHub 公開專案。",
+        image: "https://avatars.githubusercontent.com/u/9919?s=200&v=4",
+        link: "https://github.com/digsteak"
+      },
+      {
+        title: "入口網站範例",
+        description: "這是一個卡片式入口網站範本。",
+        image: "https://picsum.photos/400/200?random=1",
+        link: "https://digsteak.github.io"
+      },
+      {
+        title: "學習資源",
+        description: "收集一些前端學習資源。",
+        image: "https://picsum.photos/400/200?random=2",
+        link: "https://developer.mozilla.org/zh-TW/"
+      }
+    ];
+
+    const container = document.getElementById("cardContainer");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderCards(filter = "") {
+      container.innerHTML = "";
+      cards
+        .filter(card => card.title.toLowerCase().includes(filter.toLowerCase()) ||
+                        card.description.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(card => {
+          const cardElement = document.createElement("div");
+          cardElement.className = "card";
+          cardElement.innerHTML = `
+            <img src="${card.image}" alt="${card.title}">
+            <div class="card-content">
+              <h3>${card.title}</h3>
+              <p>${card.description}</p>
+              <a href="${card.link}" target="_blank">前往</a>
+            </div>
+          `;
+          container.appendChild(cardElement);
+        });
+    }
+
+    // 初始渲染
+    renderCards();
+
+    // 搜尋功能
+    searchInput.addEventListener("input", e => {
+      renderCards(e.target.value);
+    });
+  </script>
+</body>
+</html>
